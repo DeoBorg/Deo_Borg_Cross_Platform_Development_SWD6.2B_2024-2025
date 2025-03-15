@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "756135843471",
+    "project_id": "calorie-snap-4942e",
+    "storage_bucket": "calorie-snap-4942e.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:756135843471:android:bfe2809c0b2f49551ec2fa",
+        "android_client_info": {
+          "package_name": "com.example.deo_borg_swd62b"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBQ3qi7JJl0-jUE2l8mH7HWIfiQKCXxwGA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

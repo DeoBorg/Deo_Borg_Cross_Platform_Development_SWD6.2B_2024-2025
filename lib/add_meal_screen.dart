@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class AddMealScreen extends StatefulWidget {
+  const AddMealScreen({super.key});
+
   @override
   _AddMealScreenState createState() => _AddMealScreenState();
 }
@@ -13,14 +15,14 @@ class _AddMealScreenState extends State<AddMealScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFF8D6E63), 
+      backgroundColor: const Color(0xFF8D6E63), 
       appBar: AppBar(
-        title: Text("Calorie Snap", style: TextStyle(fontWeight: FontWeight.bold)),
-        backgroundColor: Color(0xFF4B2E2E), 
+        title: const Text("Calorie Snap", style: TextStyle(fontWeight: FontWeight.bold)),
+        backgroundColor: const Color(0xFF4B2E2E), 
         centerTitle: true,
       ),
       body: Padding(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -34,7 +36,7 @@ class _AddMealScreenState extends State<AddMealScreen> {
                 border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
               ),
             ),
-            SizedBox(height: 15),
+            const SizedBox(height: 15),
 
             // Calories input field
             TextField(
@@ -47,7 +49,7 @@ class _AddMealScreenState extends State<AddMealScreen> {
                 border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
               ),
             ),
-            SizedBox(height: 15),
+            const SizedBox(height: 15),
 
             // Weight input Field
             TextField(
@@ -60,7 +62,7 @@ class _AddMealScreenState extends State<AddMealScreen> {
                 border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
 
             // Add Photo Button
             Center(
@@ -68,16 +70,16 @@ class _AddMealScreenState extends State<AddMealScreen> {
                 onPressed: () {
                   // TODO: Implement Camera Functionality
                 },
-                icon: Icon(Icons.camera_alt),
-                label: Text("Add Photo of Meal"),
+                icon: const Icon(Icons.camera_alt),
+                label: const Text("Add Photo of Meal"),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Color(0xFFD7B899), 
+                  backgroundColor: const Color(0xFFD7B899), 
                   foregroundColor: Colors.black,
-                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
                 ),
               ),
             ),
-            SizedBox(height: 30),
+            const SizedBox(height: 30),
 
             //Add Meal & Cancel
             Row(
@@ -87,10 +89,10 @@ class _AddMealScreenState extends State<AddMealScreen> {
                   onPressed: () {
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Color(0xFFD7B899),
-                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                    backgroundColor: const Color(0xFFD7B899),
+                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
                   ),
-                  child: Text("Add Meal", style: TextStyle(color: Colors.black)),
+                  child: const Text("Add Meal", style: TextStyle(color: Colors.black)),
                 ),
 
                 ElevatedButton(
@@ -99,9 +101,9 @@ class _AddMealScreenState extends State<AddMealScreen> {
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.redAccent,
-                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
                   ),
-                  child: Text("Cancel", style: TextStyle(color: Colors.white)),
+                  child: const Text("Cancel", style: TextStyle(color: Colors.white)),
                 ),
               ],
             ),
