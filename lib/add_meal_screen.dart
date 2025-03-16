@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
 
 class AddMealScreen extends StatefulWidget {
   const AddMealScreen({super.key});
@@ -11,6 +13,18 @@ class _AddMealScreenState extends State<AddMealScreen> {
   final TextEditingController mealNameController = TextEditingController();
   final TextEditingController caloriesController = TextEditingController();
   final TextEditingController weightController = TextEditingController();
+
+  File? _mealImage;
+
+  Future<void> _pickImage() async {
+    final pickedFile = await ImagePicker().pickImage(source: ImageSource.camera);
+
+    if (pickedFile != null) {
+      setState(() {
+        _mealImage = File(pickedFile.path); // Store the taken photo
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -64,16 +78,34 @@ class _AddMealScreenState extends State<AddMealScreen> {
             ),
             const SizedBox(height: 20),
 
+            if (_mealImage != null)
+            Center(
+                child: Column(
+                  children: [
+                    Image.file(_mealImage!, height: 150), // Show image
+                    const SizedBox(height: 10),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        ElevatedButton(
+                          onPressed: _pickImage,// Retake the photo
+                          style: ElevatedButton.styleFrom(backgroundColor: Colors.redAccent),
+                          child: const Text("Retake", style: TextStyle(color: Colors.white)),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
             // Add Photo Button
             Center(
               child: ElevatedButton.icon(
-                onPressed: () {
-                  // TODO: Implement Camera Functionality
-                },
+                onPressed: _pickImage,
                 icon: const Icon(Icons.camera_alt),
                 label: const Text("Add Photo of Meal"),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFFD7B899), 
+                
                   foregroundColor: Colors.black,
                   padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
                 ),
