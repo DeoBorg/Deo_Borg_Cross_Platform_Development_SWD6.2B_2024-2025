@@ -5,6 +5,8 @@ import 'dart:io';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:uuid/uuid.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class AddMealScreen extends StatefulWidget {
   const AddMealScreen({super.key});
@@ -22,13 +24,72 @@ class _AddMealScreenState extends State<AddMealScreen> {
     app: Firebase.app(),
     databaseURL:
         "https://calorie-snap-4942e-default-rtdb.europe-west1.firebasedatabase.app",
-  ).ref("meals"); // Connects to my Firebase Realtime Database
+  ).ref("meals");
 
   File? _mealImage;
-  String? _imageUUID; // Will be used to store the image in Firebase Storage
+  String? _imageUUID;
   bool _isSubmitting = false;
 
-  Future<void> _pickImage() async { //Function to use the camera to take a photo
+  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
+
+  @override
+  void initState() {
+    super.initState();
+    _initNotifications();
+  }
+
+  /// Initialize Local Notifications
+  Future<void> _initNotifications() async {
+  const AndroidInitializationSettings androidSettings =
+      AndroidInitializationSettings('@mipmap/ic_launcher');
+
+  const InitializationSettings settings =
+      InitializationSettings(android: androidSettings);
+
+  await flutterLocalNotificationsPlugin.initialize(settings);
+
+  if(await Permission.notification.isDenied){
+    await Permission.notification.request();
+  }
+}
+
+
+  // Show a Local Notification
+  Future<void> _showNotification() async {
+  const AndroidNotificationChannel channel = AndroidNotificationChannel(
+    'meal_added_channel', // ID
+    'Meal Notifications', // Name
+    description: 'Notifications for meal addition', // Description
+    importance: Importance.high,
+  );
+
+  // **Ensure the channel is created**
+  final flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+  await flutterLocalNotificationsPlugin
+      .resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin>()
+      ?.createNotificationChannel(channel);
+
+  const AndroidNotificationDetails androidDetails = AndroidNotificationDetails(
+    'meal_added_channel',
+    'Meal Notifications',
+    importance: Importance.high,
+    priority: Priority.high,
+  );
+
+  const NotificationDetails details = NotificationDetails(android: androidDetails);
+
+  await flutterLocalNotificationsPlugin.show(
+    0, // Notification ID
+    'Meal Added', // Title
+    'Your meal was added successfully!', // Message
+    details,
+  );
+}
+
+
+  Future<void> _pickImage() async {
     final pickedFile =
         await ImagePicker().pickImage(source: ImageSource.camera);
 
@@ -53,12 +114,8 @@ class _AddMealScreenState extends State<AddMealScreen> {
         _mealImage != null;
   }
 
-  Future<void> _submitMeal() async { //Function to submit the meal
+  Future<void> _submitMeal() async {
     if (!_isFormValid()) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-            content: Text("Please fill in all fields and add a photo")),
-      );
       return;
     }
 
@@ -67,7 +124,7 @@ class _AddMealScreenState extends State<AddMealScreen> {
     });
 
     try {
-      String mealId = mealsRef.push().key!; // Generates a unique key for the meal 
+      String mealId = mealsRef.push().key!;
       await mealsRef.child(mealId).set({
         "name": mealNameController.text.trim(),
         "calories": int.parse(caloriesController.text.trim()),
@@ -75,9 +132,8 @@ class _AddMealScreenState extends State<AddMealScreen> {
         "imageUUID": _imageUUID,
       });
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Meal added successfully")),
-      );
+      // Show local notification
+      _showNotification();
 
       setState(() {
         _isSubmitting = false;
@@ -85,9 +141,6 @@ class _AddMealScreenState extends State<AddMealScreen> {
 
       Navigator.pop(context);
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Error: $e")),
-      );
       setState(() {
         _isSubmitting = false;
       });
@@ -183,13 +236,13 @@ class _AddMealScreenState extends State<AddMealScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 ElevatedButton(
-                  onPressed: _isSubmitting ? null : _submitMeal, 
+                  onPressed: _isSubmitting ? null : _submitMeal,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFFD7B899),
                     padding: const EdgeInsets.symmetric(
                         horizontal: 20, vertical: 12),
                   ),
-                  child: _isSubmitting 
+                  child: _isSubmitting
                       ? const CircularProgressIndicator(color: Colors.black)
                       : const Text("Add Meal",
                           style: TextStyle(color: Colors.black)),
@@ -214,3 +267,4 @@ class _AddMealScreenState extends State<AddMealScreen> {
     );
   }
 }
+

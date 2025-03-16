@@ -7,7 +7,7 @@ plugins {
 
 android {
     namespace = "com.example.deo_borg_swd62b"
-    compileSdk = flutter.compileSdkVersion
+    compileSdk = 35
     ndkVersion = flutter.ndkVersion
 
     compileOptions {
