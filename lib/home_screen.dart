@@ -93,13 +93,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: const Text("Add Existing Meal", style: TextStyle(color: Colors.black)),
                 ),
 
-                // Camera Button
-                FloatingActionButton(
-                  onPressed: () {},
-                  backgroundColor: const Color(0xFF4B2E2E), // Espresso Brown
-                  child: const Icon(Icons.camera_alt, color: Colors.white),
-                ),
-
                 // Add New Meal Button
                 ElevatedButton(
                   onPressed: () {
